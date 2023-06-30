@@ -1,6 +1,11 @@
 name: Release CI
 
-on: [push]
+on:
+  push:
+    tags:
+      - 'NO-TAG'
+    branches:
+      - 'main'
 
 jobs:
   build:
@@ -64,8 +69,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "0.0.4"
-          draft: true
+          tag_name: "0.0.5"
+          draft: false
           files: |
             target/release/libdenodio.dylib
             target/release/libdenodio.so
