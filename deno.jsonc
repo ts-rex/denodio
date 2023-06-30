@@ -1,0 +1,8 @@
+{
+	"fmt": {
+		"indentWidth": 4,
+		"semiColons": false,
+		"useTabs": true,
+		"proseWrap": "never"
+	}
+}
