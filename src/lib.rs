@@ -3,7 +3,7 @@ extern crate rodio;
 
 use deno_bindgen::deno_bindgen as binding;
 use rodio::{Decoder, OutputStream, SpatialSink};
-use std::{io::{BufReader, Cursor}};
+use std::{io::{BufReader, Cursor}, convert::TryInto};
 
 #[binding]
 pub struct Options {
@@ -23,18 +23,23 @@ pub struct Options {
     right_ear: Option<Vec<f32>>
 }
 
+fn pos(vec: Vec<f32>) -> [f32; 3] {
+    let [x, y, z]: [f32; 3] = vec.try_into().unwrap();
+    [x, y, z]
+}
+
 // Play a sound
 // import { play } from "./mod.ts"
 // await play({ buffer: Array.from(await Deno.readFile("./tone.mp3")) });
 #[binding(non_blocking)]
 pub fn play(options: Options) {
     let internal_options: InternalOptions = InternalOptions {
-        volume: if options.volume.is_some() { options.volume.unwrap() } else { 1 },
-        speed: if options.speed.is_some() { options.speed.unwrap() } else { 1 },
+        volume: if options.volume.is_some() { options.volume.unwrap() } else { 1.0 },
+        speed: if options.speed.is_some() { options.speed.unwrap() } else { 1.0 },
         use_spatial: options.use_spatial,
-        emitter_pos: if options.use_spatial.is_some() { options.emitter_pos.unwrap() } else { [0.0, 0.0, 0.0] },
-        left_ear: if options.use_spatial.is_some() { options.left_ear.unwrap() } else { [0.0, 0.0, 0.0] },
-        right_ear: if options.use_spatial.is_some() { options.right_ear.unwrap() } else { [0.0, 0.0, 0.0] },
+        emitter_pos: if options.use_spatial { pos(options.emitter_pos.unwrap()) } else { [0.0, 0.0, 0.0] },
+        left_ear: if options.use_spatial { pos(options.left_ear.unwrap()) } else { [0.0, 0.0, 0.0] },
+        right_ear: if options.use_spatial { pos(options.right_ear.unwrap()) } else { [0.0, 0.0, 0.0] },
         buffer: unsafe { std::mem::transmute(options.buffer.as_slice()) },
     };
     _play(internal_options)
