@@ -7,6 +7,8 @@ jobs:
     name: ${{ matrix.kind }} ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 60
+    permissions: 
+      contents: write
     strategy:
       matrix:
         os: [macOS-latest, windows-latest, ubuntu-latest]
@@ -56,18 +58,14 @@ jobs:
         with:
           command: build
           args: --release
-  release:
-    name: release the package
-    runs-on: ubuntu-latest
 
-    steps: 
       - name: Release Plugin
         uses: softprops/action-gh-release@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "0.0.1"
-          draft: false
+          tag_name: "denodio release"
+          draft: true
           files: |
             target/release/libdenodio.dylib
             target/release/libdenodio.so
