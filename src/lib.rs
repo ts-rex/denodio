@@ -31,7 +31,7 @@ pub fn play(options: Options) {
     let internal_options: InternalOptions = InternalOptions {
         buffer: unsafe { std::mem::transmute(options.buffer.as_slice()) },
         volume: if options.volume { options.volume } else { 1 },
-        speed: if options.speed { optoins.speed } else { 1 },
+        speed: if options.speed { options.speed } else { 1 },
         use_spatial: options.use_spatial,
         emitter_pos: if options.use_spatial { options.emitter_pos } else { [0.0, 0.0, 0.0] },
         left_ear: if options.use_spatial { options.left_ear } else { [0.0, 0.0, 0.0] },
