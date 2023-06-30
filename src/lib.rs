@@ -37,9 +37,9 @@ pub fn play(options: Options) {
         volume: if options.volume.is_some() { options.volume.unwrap() } else { 1.0 },
         speed: if options.speed.is_some() { options.speed.unwrap() } else { 1.0 },
         use_spatial: options.use_spatial,
-        emitter_pos: if options.use_spatial { pos(options.emitter_pos.unwrap()) } else { [0.0, 0.0, 0.0] },
-        left_ear: if options.use_spatial { pos(options.left_ear.unwrap()) } else { [0.0, 0.0, 0.0] },
-        right_ear: if options.use_spatial { pos(options.right_ear.unwrap()) } else { [0.0, 0.0, 0.0] },
+        emitter_pos: if options.use_spatial && options.emitter_pos.is_some() { pos(options.emitter_pos.unwrap()) } else { [0.0, 0.0, 0.0] },
+        left_ear: if options.use_spatial && options.left_ear.is_some() { pos(options.left_ear.unwrap()) } else { [0.0, 0.0, 0.0] },
+        right_ear: if options.use_spatial && options.right_ear.is_some() { pos(options.right_ear.unwrap()) } else { [0.0, 0.0, 0.0] },
         buffer: unsafe { std::mem::transmute(options.buffer.as_slice()) },
     };
     _play(internal_options)
