@@ -20,7 +20,7 @@ function readPointer(v: any): Uint8Array {
 }
 
 const url = new URL(
-  "https://github.com/marinastudios/denodio/releases/download/0.0.2",
+  "https://github.com/marinastudios/denodio/releases/download/0.0.3",
   import.meta.url,
 )
 

@@ -23,19 +23,19 @@ pub struct Options {
     right_ear: Option<Vec<f32>>
 }
 
-#[binding(non_blocking)]
 // Play a sound
 // import { play } from "./mod.ts"
 // await play({ buffer: Array.from(await Deno.readFile("./tone.mp3")) });
+#[binding(non_blocking)]
 pub fn play(options: Options) {
     let internal_options: InternalOptions = InternalOptions {
-        buffer: unsafe { std::mem::transmute(options.buffer.as_slice()) },
-        volume: if options.volume { options.volume } else { 1 },
-        speed: if options.speed { options.speed } else { 1 },
+        volume: if options.volume.is_some() { options.volume.unwrap() } else { 1 },
+        speed: if options.speed.is_some() { options.speed.unwrap() } else { 1 },
         use_spatial: options.use_spatial,
-        emitter_pos: if options.use_spatial { options.emitter_pos } else { [0.0, 0.0, 0.0] },
-        left_ear: if options.use_spatial { options.left_ear } else { [0.0, 0.0, 0.0] },
-        right_ear: if options.use_spatial { options.right_ear } else { [0.0, 0.0, 0.0] }
+        emitter_pos: if options.use_spatial.is_some() { options.emitter_pos.unwrap() } else { [0.0, 0.0, 0.0] },
+        left_ear: if options.use_spatial.is_some() { options.left_ear.unwrap() } else { [0.0, 0.0, 0.0] },
+        right_ear: if options.use_spatial.is_some() { options.right_ear.unwrap() } else { [0.0, 0.0, 0.0] },
+        buffer: unsafe { std::mem::transmute(options.buffer.as_slice()) },
     };
     _play(internal_options)
 }
