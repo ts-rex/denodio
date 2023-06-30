@@ -36,7 +36,6 @@ pub fn play(options: Options) {
     let internal_options: InternalOptions = InternalOptions {
         volume: if options.volume.is_some() { options.volume.unwrap() } else { 1.0 },
         speed: if options.speed.is_some() { options.speed.unwrap() } else { 1.0 },
-        use_spatial: options.use_spatial,
         emitter_pos: if options.use_spatial && options.emitter_pos.is_some() { pos(options.emitter_pos.unwrap()) } else { [0.0, 0.0, 0.0] },
         left_ear: if options.use_spatial && options.left_ear.is_some() { pos(options.left_ear.unwrap()) } else { [0.0, 0.0, 0.0] },
         right_ear: if options.use_spatial && options.right_ear.is_some() { pos(options.right_ear.unwrap()) } else { [0.0, 0.0, 0.0] },
@@ -49,7 +48,6 @@ struct InternalOptions {
     buffer: &'static [u8],
     volume: f32,
     speed: f32,
-    use_spatial: bool,
     /// position of the sound emitter
     /// Ignored if `use_spacial` is false
     emitter_pos: [f32; 3],
