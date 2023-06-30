@@ -59,12 +59,12 @@ jobs:
           command: build
           args: --release
 
-      - name: Release Plugin
+      - name: Release
         uses: softprops/action-gh-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "denodio release"
+          tag_name: "0.0.1"
           draft: true
           files: |
             target/release/libdenodio.dylib
