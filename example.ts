@@ -1,3 +1,7 @@
 import { play } from "./mod.ts"
 
-await play({ buffer: Array.from(await Deno.readFile("./tone.mp3")) });
+await play({
+	buffer: await Deno.readFile("./tone.mp3"),
+	use_spatial: false,
+    volume: 0.1
+})

@@ -20,7 +20,7 @@ function readPointer(v: any): Uint8Array {
 }
 
 const url = new URL(
-  "https://github.com/marinastudios/denodio/releases/download/0.0.1",
+  "https://github.com/marinastudios/denodio/releases/download/0.0.2",
   import.meta.url,
 )
 
@@ -52,6 +52,24 @@ export type Options = {
    * Uint8Array
    */
   buffer: Array<number>
+  volume: number | undefined | null
+  speed: number | undefined | null
+  use_spatial: boolean
+  /**
+   * position of the sound emitter
+   * Ignored if `use_spacial` is false
+   */
+  emitter_pos: Array<number> | undefined | null
+  /**
+   * position of the left ear of the listener
+   * Ignored if `use_spacial` is false
+   */
+  left_ear: Array<number> | undefined | null
+  /**
+   * position of the left ear of the listener
+   * Ignored if `use_spacial` is false
+   */
+  right_ear: Array<number> | undefined | null
 }
 export function play(a0: Options) {
   const a0_buf = encode(JSON.stringify(a0))
