@@ -1,67 +1,62 @@
 // Auto-generated with deno_bindgen
 function encode(v: string | Uint8Array): Uint8Array {
-	if (typeof v !== "string") return v
-	return new TextEncoder().encode(v)
+  if (typeof v !== "string") return v
+  return new TextEncoder().encode(v)
 }
 
 function decode(v: Uint8Array): string {
-	return new TextDecoder().decode(v)
+  return new TextDecoder().decode(v)
 }
 
 // deno-lint-ignore no-explicit-any
 function readPointer(v: any): Uint8Array {
-	const ptr = new Deno.UnsafePointerView(v)
-	const lengthBe = new Uint8Array(4)
-	const view = new DataView(lengthBe.buffer)
-	ptr.copyInto(lengthBe, 0)
-	const buf = new Uint8Array(view.getUint32(0))
-	ptr.copyInto(buf, 4)
-	return buf
+  const ptr = new Deno.UnsafePointerView(v)
+  const lengthBe = new Uint8Array(4)
+  const view = new DataView(lengthBe.buffer)
+  ptr.copyInto(lengthBe, 0)
+  const buf = new Uint8Array(view.getUint32(0))
+  ptr.copyInto(buf, 4)
+  return buf
 }
 
-const url = new URL("../target/release", import.meta.url)
+const url = new URL(
+  "https://github.com/marinastudios/denodio/releases/download/0.0.1",
+  import.meta.url,
+)
 
-let uri = url.pathname
+import { dlopen, FetchOptions } from "https://deno.land/x/plug@1.0.1/mod.ts"
+let uri = url.toString()
 if (!uri.endsWith("/")) uri += "/"
 
-// https://docs.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibrarya#parameters
-if (Deno.build.os === "windows") {
-	uri = uri.replace(/\//g, "\\")
-	// Remove leading slash
-	if (uri.startsWith("\\")) {
-		uri = uri.slice(1)
-	}
-}
+let darwin: string | { aarch64: string; x86_64: string } = uri
 
-const { symbols } = Deno.dlopen(
-	{
-		darwin: uri + "libdenodio.dylib",
-		windows: uri + "denodio.dll",
-		linux: uri + "libdenodio.so",
-		freebsd: uri + "libdenodio.so",
-		netbsd: uri + "libdenodio.so",
-		aix: uri + "libdenodio.so",
-		solaris: uri + "libdenodio.so",
-		illumos: uri + "libdenodio.so",
-	}[Deno.build.os],
-	{
-		play: {
-			parameters: ["buffer", "usize"],
-			result: "void",
-			nonblocking: true,
-		},
-	},
-)
+const opts: FetchOptions = {
+  name: "denodio",
+  url: {
+    darwin,
+    windows: uri,
+    linux: uri,
+  },
+  suffixes: {
+    darwin: {
+      aarch64: "_arm64",
+    },
+  },
+  cache: "use",
+}
+const { symbols } = await dlopen(opts, {
+  play: { parameters: ["buffer", "usize"], result: "void", nonblocking: true },
+})
 export type Options = {
-	/**
-	 * Uint8Array
-	 */
-	buffer: Array<number>
+  /**
+   * Uint8Array
+   */
+  buffer: Array<number>
 }
 export function play(a0: Options) {
-	const a0_buf = encode(JSON.stringify(a0))
+  const a0_buf = encode(JSON.stringify(a0))
 
-	const rawResult = symbols.play(a0_buf, a0_buf.byteLength)
-	const result = rawResult
-	return result
+  const rawResult = symbols.play(a0_buf, a0_buf.byteLength)
+  const result = rawResult
+  return result
 }

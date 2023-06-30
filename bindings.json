@@ -1,1 +1,0 @@
-{"name":"","littleEndian":false,"symbols":{"play":{"parameters":[{"structenum":{"ident":"Options"}}],"result":"void","nonBlocking":true}},"typeDefs":{"Options":{"buffer":"Vec"}},"tsTypes":{"Options":"export type Options = {\n  /**\n  * Uint8Array\n  **/\n  buffer: Array<number>;\n};"}}

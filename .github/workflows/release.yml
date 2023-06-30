@@ -1,7 +1,6 @@
 name: Release CI
 
-on:
-  workflow_dispatch:
+on: [workflow_dispatch, push]
 
 jobs:
   build:
@@ -57,14 +56,18 @@ jobs:
         with:
           command: build
           args: --release
+  release:
+    name: release the package
+    runs-on: ubuntu-latest
 
+    steps: 
       - name: Release Plugin
         uses: softprops/action-gh-release@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          tag_name: "denodio release"
-          draft: true
+          tag_name: "0.0.1"
+          draft: false
           files: |
             target/release/libdenodio.dylib
             target/release/libdenodio.so
